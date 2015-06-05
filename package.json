@@ -1,11 +1,15 @@
 {
 	"name": "node-api",
 	"main": "server.js",
+	"repository": "https://github.com/JoaoHenriquePereira/node-rest",
 	"dependencies": {
-		"express": "~4.0.0",
-		"expresso": "~0.9.0",
-		"mongoose": "~3.6.13",
-		"body-parser": "~1.0.1",
-		"underscore": "~1.8.3"
+		"body-parser": "*",
+		"chai": "*",
+		"express": "*",
+		"express-mongoose": "*",
+		"mocha": "*",
+		"mongoose": "*",
+		"supertest": "*",
+		"underscore": "*"
 	}
 }
