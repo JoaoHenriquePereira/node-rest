@@ -9,20 +9,17 @@ module.exports = function (server) {
 	}
 
 	function api_root_get(req, res, next) {
-		var expected_json = {
+		var ans = {
 			"name": pjson.name,
 			"version": pjson.version,
 			"repository": pjson.repository,
 			"cacheable": false,
-			"links": [{
-				"rel": "self",
-				"href": '/'+pjson.name+
-			}, {
-				"rel": "compute",
-				"href": '/'+pjson.name+'/compute'
-			}]
+			"links": [
+				{"rel": "self", "href": '/'+pjson.name}, 
+				{"rel": "compute", "href": '/'+pjson.name+'/compute'}
+			]
 		}
-		res.send(expected_json);
+		res.send(ans);
 		return next();
 	}
 

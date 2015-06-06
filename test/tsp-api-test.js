@@ -1,8 +1,8 @@
-var chai 		= require('chai');
-	expect 		= require('chai').expect,
-	supertest 	= require('supertest'),
-	api 		= supertest('http://localhost:8080');
-	pjson 		= require('../package.json');
+var chai 			= require('chai');
+	expect 			= require('chai').expect,
+	supertest 		= require('supertest'),
+	api 			= supertest('http://localhost:8080');
+	pjson 			= require('../package.json');
 
 chai.use(require('chai-json-schema'));
 
@@ -26,6 +26,10 @@ describe('app', function() {
 
   	it('API starting entry point should provide HATEOAS navigation', function(done) {
   		
+  		var invalid_version = '9'+pjson.version;
+
+  		var expected_json_schema = require('./test_schema/api-root-schema.json');
+
   		var expected_json = {
 			"name": pjson.name,
 			"version": pjson.version,
@@ -33,37 +37,42 @@ describe('app', function() {
 			"cacheable": false,
 			"links": [{
 				"rel": "self",
-				"href": '/'+pjson.name+'/'
+				"href": '/'+pjson.name
 			}, {
 				"rel": "compute",
 				"href": '/'+pjson.name+'/compute'
 			}]
 		}
 
+		// No version specified
 		api.get('/'+pjson.name)
 		.set('Accept', 'application/json')
 		.expect(200)
 		.end( function(err, res) {
 			if (err) return done(err);
-			expect(res.body).to.be.jsonSchema(expected_json);
+			expect(res.body).to.be.jsonSchema(expected_json_schema);
+			//Warning not a fan of comparing by stringify like this
+			expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expected_json));
 		});
 
+		// Correct version specified
 		api.get('/'+pjson.name)
 		.set('Accept', 'application/json')
-		.set('Accept-Version', '0.0.1')
+		.set('Accept-Version', pjson.version)
 		.expect(200)
 		.end( function(err, res) {
 			if (err) return done(err);
-			expect(res.body).to.be.jsonSchema(expected_json);
+			expect(res.body).to.be.jsonSchema(expected_json_schema);
+			expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify(expected_json));
 		});
 
+		// Incorrect version specified
 		api.get('/'+pjson.name)
 		.set('Accept', 'application/json')
-		.set('Accept-Version', '0.0.2')
-		.expect(400)//Should be 501?
+		.set('Accept-Version', invalid_version)
+		.expect(400) // Should be 501?
 		.end( function(err, res) {
 			if (err) return done(err);
-			expect(res.body).to.be.jsonSchema(expected_json);
 			done();
 		});
   	});

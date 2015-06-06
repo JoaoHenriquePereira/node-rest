@@ -1,0 +1,34 @@
+{
+    "title": "api root schema v1",
+    "type": "object",
+    "required": ["name", "version", "repository", "cacheable", "links"],
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "repository": {
+            "type": "string"
+        },
+        "cacheable": {
+            "type": "boolean"
+        },
+        "links": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+                "required": ["rel","href"],
+                "properties": {
+                    "rel": {
+                        "type" : "string"
+                    },
+                    "href": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
