@@ -2,16 +2,16 @@
 var restify = require('restify');
 
 // Config
-
 var port 	= process.env.PORT || 8080;
-var message = "Hello!";
 
 // Serve
-var server = restify.createServer();
+var server = restify.createServer({'name': 'node'});
 
-server.get('/', function(req, res, next) {
-	res.json('{"message": "Hello!"}'); 
-});
+server.use(restify.fullResponse()); // Set up default headers
+server.use(restify.bodyParser()); // Remap the body content of a request
+
+// require the routes
+require('./routes')(server);
 
 server.listen(port, function () {
 	console.log('%s listening at %s', server.name, server.url);

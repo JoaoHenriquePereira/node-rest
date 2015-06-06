@@ -9,7 +9,7 @@ describe('app', function() {
 	it('Root should return \"Hello!\"', function(done) {
 
 		var expected_json = {
-			"message": "Hello!"
+			"message": "Hello!",
 		}
 
 		api.get('/')
