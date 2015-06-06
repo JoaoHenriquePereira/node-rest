@@ -5,7 +5,7 @@ var restify = require('restify');
 var port 	= process.env.PORT || 8080;
 
 // Serve
-var server = restify.createServer({'name': 'node'});
+var server = restify.createServer({'name': 'node-rest-tsp'});
 
 server.use(restify.fullResponse()); // Set up default headers
 server.use(restify.bodyParser()); // Remap the body content of a request
