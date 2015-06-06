@@ -7,6 +7,7 @@ var chai 		= require('chai');
 chai.use(require('chai-json-schema'));
 
 describe('app', function() {
+
 	it('Root should return \"Hello!\"', function(done) {
 
 		var expected_json = {
@@ -28,7 +29,7 @@ describe('app', function() {
   		var expected_json = {
 			"name": pjson.name,
 			"version": pjson.version,
-			"repository": "https://github.com/JoaoHenriquePereira/node-rest-tsp",
+			"repository": pjson.repository,
 			"cacheable": false,
 			"links": [{
 				"rel": "self",

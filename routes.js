@@ -1,6 +1,7 @@
 module.exports = function (server) {
 
-	var pjson = require('./package.json');
+	var _ 		= require('underscore');
+	var pjson 	= require('./package.json');
 
 	//-------------------------------
 	function root_get(req, res, next) {
@@ -11,14 +12,14 @@ module.exports = function (server) {
 		var expected_json = {
 			"name": pjson.name,
 			"version": pjson.version,
-			"repository": "https://github.com/JoaoHenriquePereira/node-rest-tsp",
+			"repository": pjson.repository,
 			"cacheable": false,
 			"links": [{
 				"rel": "self",
-				"href": '/'+pjson.name+'/v'+pjson.version
+				"href": '/'+pjson.name+
 			}, {
 				"rel": "compute",
-				"href": '/'+pjson.name+'/v'+pjson.version+'/compute'
+				"href": '/'+pjson.name+'/compute'
 			}]
 		}
 		res.send(expected_json);
