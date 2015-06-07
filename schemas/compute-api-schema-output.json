@@ -1,19 +1,16 @@
 {
-    "title": "api root schema v1",
+    "title": "compute api output schema v1",
     "type": "object",
-    "required": ["name", "version", "repository", "cacheable", "_links"],
+    "required": ["code", "_links"],
     "properties": {
-        "name": {
+        "code": {
             "type": "string"
         },
-        "version": {
+        "message": {
             "type": "string"
         },
-        "repository": {
+        "description": {
             "type": "string"
-        },
-        "cacheable": {
-            "type": "boolean"
         },
         "_links": {
             "type": "object"

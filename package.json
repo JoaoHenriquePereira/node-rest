@@ -7,7 +7,9 @@
 	"dependencies": {
 		"chai": "~1.9",
 		"chai-json-schema": "*",
+		"enum": "*",
 		"hal": "*",
+		"jayschema": "*",
 		"restify": "*",
 		"supertest": "*",
 		"underscore": "*"

@@ -1,0 +1,16 @@
+{
+    "title": "result api output schema v1",
+    "type": "object",
+    "required": ["...", "_links"],
+    "properties": {
+        "...": {
+            "type": "string"
+        },
+        "_links": {
+            "type": "object"
+        },
+        "_embedded": {
+            "type": "object"
+        }
+    }
+}

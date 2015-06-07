@@ -20,11 +20,12 @@ describe('root', function() {
 
 	it('Server root should return \"Hello!\"', function(done) {
 
+		var entry_point = '/';
 		var expected_json = {
 			"message": "Hello!"
 		}
 
-		api.get('/')
+		api.get(entry_point)
 		.set('Accept', 'application/json')
 		.expect(200)
 		.end( function(err, res) {
@@ -36,9 +37,10 @@ describe('root', function() {
 
   	it('API root should provide HATEOAS navigation', function(done) {
   		
+  		var entry_point = '/'+pjson.name;
   		var invalid_version = '9'+pjson.version;
 
-  		var expected_json_schema = require('./test_schema/api-root-schema.json');
+  		var expected_json_schema = require('../schemas/root-api-schema-output.json');
 
   		var expected_json = new hal.Resource({
 			name: pjson.name,
@@ -50,7 +52,7 @@ describe('root', function() {
 		expected_json.link('compute', '/'+pjson.name+'/compute');
 
 		// No version specified
-		api.get('/'+pjson.name)
+		api.get(entry_point)
 		.set('Accept', 'application/json')
 		.expect(200)
 		.end( function(err, res) {
@@ -61,7 +63,7 @@ describe('root', function() {
 		});
 
 		// Correct version specified
-		api.get('/'+pjson.name)
+		api.get(entry_point)
 		.set('Accept', 'application/json')
 		.set('Accept-Version', pjson.version)
 		.expect(200)
@@ -72,7 +74,7 @@ describe('root', function() {
 		});
 
 		// Incorrect version specified
-		api.get('/'+pjson.name)
+		api.get(entry_point)
 		.set('Accept', 'application/json')
 		.set('Accept-Version', invalid_version)
 		.expect(400) // Should be 501?

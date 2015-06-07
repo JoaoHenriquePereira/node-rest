@@ -6,10 +6,10 @@
 // Root Controller
 //
 
-module.exports.setup = function (server) {
+var hal 	= require('hal');
+	pjson 	= require('../package.json');
 
-	var hal 	= require('hal');
-		pjson 	= require('../package.json');
+module.exports.setup = function (server) {
 
 	//Server root GET
 	function root_get(req, res, next) {
@@ -18,7 +18,7 @@ module.exports.setup = function (server) {
 
 	//API root GET
 	function api_root_get(req, res, next) {
-		
+
 		var api_root = new hal.Resource({
 			name: pjson.name,
 			version: pjson.version,
