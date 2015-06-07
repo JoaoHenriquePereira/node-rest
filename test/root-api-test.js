@@ -1,14 +1,24 @@
+// node-rest-tsp 0.0.1
+// Exposing rust-tsp via nodejs rest API
+// Date: 5th June 2015
+// Repo: https://github.com/JoaoHenriquePereira/node-rest-tsp
+
+//
+// Root Controller Test
+//
+
 var chai 			= require('chai');
 	expect 			= require('chai').expect,
+	hal 			= require('hal');
+	pjson 			= require('../package.json');
 	supertest 		= require('supertest'),
 	api 			= supertest('http://localhost:8080');
-	pjson 			= require('../package.json');
 
 chai.use(require('chai-json-schema'));
 
-describe('app', function() {
+describe('root', function() {
 
-	it('Root should return \"Hello!\"', function(done) {
+	it('Server root should return \"Hello!\"', function(done) {
 
 		var expected_json = {
 			"message": "Hello!"
@@ -24,25 +34,20 @@ describe('app', function() {
 		});
   	});
 
-  	it('API starting entry point should provide HATEOAS navigation', function(done) {
+  	it('API root should provide HATEOAS navigation', function(done) {
   		
   		var invalid_version = '9'+pjson.version;
 
   		var expected_json_schema = require('./test_schema/api-root-schema.json');
 
-  		var expected_json = {
-			"name": pjson.name,
-			"version": pjson.version,
-			"repository": pjson.repository,
-			"cacheable": false,
-			"links": [{
-				"rel": "self",
-				"href": '/'+pjson.name
-			}, {
-				"rel": "compute",
-				"href": '/'+pjson.name+'/compute'
-			}]
-		}
+  		var expected_json = new hal.Resource({
+			name: pjson.name,
+			version: pjson.version,
+			repository: pjson.repository,
+			cacheable: false
+		}, '/'+pjson.name);
+
+		expected_json.link('compute', '/'+pjson.name+'/compute');
 
 		// No version specified
 		api.get('/'+pjson.name)
@@ -76,7 +81,5 @@ describe('app', function() {
 			done();
 		});
   	});
-
-
 
 });

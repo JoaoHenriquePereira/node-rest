@@ -5,10 +5,15 @@
 	"version": "0.0.1",
 	"repository": "https://github.com/JoaoHenriquePereira/node-rest-tsp",
 	"dependencies": {
-		"chai": "*",
-		"mocha": "*",
+		"chai": "~1.9",
+		"chai-json-schema": "*",
+		"hal": "*",
 		"restify": "*",
 		"supertest": "*",
 		"underscore": "*"
-	}
+	},
+	"scripts": {
+    	"test": "mocha",
+    	"test-cov": "istanbul cover _mocha"
+  	}
 }
