@@ -84,9 +84,64 @@ describe('compute', function() {
 
   	});
 
-	//TODO
-  	it('Must allow access to result', function(done) {
+	it('Must allow access to result', function(done) {
   		
+		var entry_point = '/'+pjson.name+'/compute';
+
+  		var expected_json_schema = require('../schemas/compute-api-schema-output.json');
+
+		var good_request_json = {
+  			"graph_type": "u2d-cartesian",	//Unsigned 2d-cartesian coordinates
+  			"graph": [
+  				{ "name": "1", "coordinates": [ "41.1621", "8.6220" ] },
+				{ "name": "2", "coordinates": [ "40.4000", "3.7167" ] },
+				{ "name": "3", "coordinates": [ "13.7563", "100.5018" ] }, 
+				{ "name": "4", "coordinates": [ "33.9253", "18.4239" ] }, 
+				{ "name": "5", "coordinates": [ "37.7833", "122.4167" ] }, 
+				{ "name": "6", "coordinates": [ "37.3544", "121.9692" ] }, 
+				{ "name": "7", "coordinates": [ "23.5500", "46.6333" ] }, 
+				{ "name": "8", "coordinates": [ "33.4500", "70.6667" ] }, 
+				{ "name": "9", "coordinates": [ "32.6500", "16.9167" ] }, 
+				{ "name": "10", "coordinates": [ "48.2000", "16.3667" ] },
+				{ "name": "11", "coordinates": [ "48.2012", "34.3667" ] }
+  			],
+  			"options": {
+  				"mutation_rate": 0.015,
+  				"elitism": true,
+  				"population_size": 30,	// TODO must test the remaining optinal bounds
+  				"tournament_size": 5
+  			}
+  		}
+
+  		var success_code = "";
+
+		// Test good request
+		api.post(entry_point)
+		.set('Accept', 'application/json')
+		.set('Accept-Version', pjson.version)
+		.send(good_request_json)
+		.expect(200)
+		.end( function(err, res) {
+			if (err) return done(err);
+			success_code = res.body.code;console.log(success_code);
+			expect(res.body).to.be.jsonSchema(expected_json_schema);
+		});
+
+
+
+		// Test good request no version specified
+		api.post(entry_point)
+		.set('Accept', 'application/json')
+		.set('Accept-Version', pjson.version)
+		.send(good_request_json)
+		.expect(200)
+		.end( function(err, res) {
+			if (err) return done(err);
+			expect(success_code).to.not.equal(res.body.code);
+			expect(res.body).to.be.jsonSchema(expected_json_schema);
+			done();
+		});
+
   		done();
   	});
 

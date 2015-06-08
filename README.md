@@ -12,9 +12,11 @@ Playing with nodejs, TDD and REST API's to expose <a href="https://github.com/Jo
 
 # Comments
 
-I started by the very basics by having a sort of a "Hello World" in the server root "/". Then I coded the api entry point at /<project name>/ which on itself describes the app and provides "hypermedia"'ish directioning with JSON. (hypermedia'ish as JSON is not an official format).
+Status: Work in progress
 
-I focused on architecturing it properly and using a test driven development to achieve routing requests.
+I started by the very basics by having a sort of a "Hello World" in the server root "/". Then I coded the api entry point at /node-rest-tsp which on itself describes the app and provides "hypermedia"'ish directioning with JSON. (hypermedia'ish as JSON is not an official format).
+
+I am focusing mainly on architecturing it properly from the start and using a test driven development to achieve routing requests.
 
 # References
 

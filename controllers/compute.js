@@ -65,7 +65,7 @@ function filter_post_input(req_body) {
     	if (errs) { 
     		build_response(get_error_code('request-data-validation-error'), 
 						'request-data-validation-error', 
-						'Your input data is not acceptable');
+						'Your input data is not acceptable or contains errors');
     		return false;
     	} else { 
     		return true;
