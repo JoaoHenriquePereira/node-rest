@@ -9,7 +9,6 @@
 		"chai-json-schema": "*",
 		"enum": "*",
 		"hal": "*",
-		"jayschema": "*",
 		"restify": "*",
 		"supertest": "*",
 		"underscore": "*"

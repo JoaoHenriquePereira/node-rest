@@ -8,10 +8,10 @@
         },
         "graph": {
             "type": "array",
+            "minItems": 10,
+            "uniqueItems": true,
             "items": {
                 "type": "object",
-                "minItems": 10,
-                "uniqueItems": true,
                 "properties": {
                     "name": {
                         "type": "string"
@@ -43,7 +43,7 @@
                 },
                 "tournament_size": {
                     "type": "integer",
-                    "minimum": "5",
+                    "minimum": "2",
                     "maximum": "3000"
                 }
             }

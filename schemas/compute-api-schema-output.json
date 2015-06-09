@@ -17,6 +17,17 @@
         },
         "_embedded": {
             "type": "object"
+        },
+        "_errors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
         }
     }
 }

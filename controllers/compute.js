@@ -6,72 +6,30 @@
 // Compute Controller
 //
 
-var _						= require('underscore');
-	Enum					= require('enum');
+var Enum					= require('enum');
 	hal 					= require('hal');
-	JaySchema 				= require('jayschema');
 	pjson 					= require('../package.json');
-	js 						= new JaySchema();
+	chai 					= require('chai');
+	ResponseBuilder			= require('../response');
 	acceptable_graph_types 	= new Enum(['u2d-cartesian']);				//For now all we'll have is this one
-	error_types 			= new Enum({'request-not-json-format-error': 'FE1',
-										'request-data-validation-error': 'FE2'});	
 
-var Response;
-
-function get_error_code(error){
-	return error_types.get(error).value;
-}
-
-// TODO Needing a response builder
-function build_response(code, message, description) {
-
-	Response = new hal.Resource({
-		code: code,
-		message: message,
-		description: description
-	}, '/'+pjson.name+'/compute');
-
-}
-
-function add_link_to_response(rel, href) {
-	Response.link(rel, href);
-}
-
-function is_JSON(req){
-	try {
-    	JSON.parse(req);
-	} catch (e) {
-    	return false;
-	}
-	return true;
-}
+chai.use(require('chai-json-schema'));
+var Response = null;
 
 function filter_post_input(req_body) {
 
-	var expected_json_schema = require('../schemas/compute-api-schema-input.json');
+	var expected_input_schema = require('../schemas/compute-api-schema-input.json');
 
-	// Check if JSON input
-	if(!is_JSON(req_body)){
-		build_response(get_error_code('request-not-json-format-error'), 
-						'request-not-json-format-error', 
-						'Please input your request as JSON');
+	var validation_result = chai.tv4.validateMultiple(req_body, expected_input_schema);
+
+	if(!validation_result.valid) {
+		Response = new ResponseBuilder.ErrorResponse('/'+pjson.name+'/compute')
+												.build(validation_result.errors)
+												.finish();
 		return false;
 	}
 
-	var json_input = JSON.parse(req_body);
-
-	// Validate the schema
-	js.validate(json_input, expected_json_schema, function(errs) {
-    	if (errs) { 
-    		build_response(get_error_code('request-data-validation-error'), 
-						'request-data-validation-error', 
-						'Your input data is not acceptable or contains errors');
-    		return false;
-    	} else { 
-    		return true;
-    	}
-	});
-	
+	return true;
 }
 
 module.exports.setup = function (server) {
@@ -79,12 +37,18 @@ module.exports.setup = function (server) {
 	// Compute POST handler 
 	function compute_post(req, res, next) {
 
-		var json_request = JSON.stringify(req.body);
+		if(filter_post_input(req.body)){
+			// Process request and generate result
 
-		if(filter_post_input(json_request)){
+			//...
+			Response = new ResponseBuilder.ComputeResponse('/'+pjson.name+'/compute')
+												.finish();
+
+
 			res.send(200, Response);
 		} else {
-			res.send(400, Response);
+			console.log(Response);
+			res.send(Response.code, Response);
 		}
 
 		return next();
