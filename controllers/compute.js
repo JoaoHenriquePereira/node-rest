@@ -22,9 +22,20 @@ function filter_post_input(req_body) {
 
 	var validation_result = chai.tv4.validateMultiple(req_body, expected_input_schema);
 
+	// Check schema for incoherences
 	if(!validation_result.valid) {
 		Response = new ResponseBuilder.ErrorResponse('/'+pjson.name+'/compute')
 												.build(validation_result.errors)
+												.finish();
+		return false;
+	}
+
+	// Check input graph type
+	if(!acceptable_graph_types.get(req_body.graph_type)){
+		Response = new ResponseBuilder.ErrorResponse('/'+pjson.name+'/compute')
+												.build([{ 
+    													message: 'Invalid graph_type, acceptable types: '+acceptable_graph_types.toString(),
+    													dataPath: '/graph_type'}])
 												.finish();
 		return false;
 	}
@@ -47,7 +58,6 @@ module.exports.setup = function (server) {
 
 			res.send(200, Response);
 		} else {
-			console.log(Response);
 			res.send(Response.code, Response);
 		}
 
