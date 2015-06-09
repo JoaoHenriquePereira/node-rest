@@ -52,8 +52,9 @@ module.exports.setup = function (server) {
 			// Process request and generate result
 
 			//...
-			Response = new ResponseBuilder.ComputeResponse('/'+pjson.name+'/compute')
+			/*Response = new ResponseBuilder.ComputeResponse('/'+pjson.name+'/compute')
 												.finish();
+*/
 
 
 			res.send(200, Response);

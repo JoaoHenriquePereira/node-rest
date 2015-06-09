@@ -4,7 +4,7 @@
     "required": ["code", "_links"],
     "properties": {
         "code": {
-            "type": "string"
+            "type": "number"
         },
         "message": {
             "type": "string"
