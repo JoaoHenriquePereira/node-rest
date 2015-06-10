@@ -11,6 +11,7 @@ Playing with nodejs, TDD and REST API's to expose <a href="https://github.com/Jo
 * <a href="https://www.npmjs.com/package/hal">hal</a>
 * <a href="https://www.npmjs.com/package/istanbul">istanbul</a>
 * <a href="http://mochajs.org/">mocha</a>
+* <a href="https://www.npmjs.com/package/node-cache">node-cache</a>
 * <a href="http://mcavage.me/node-restify/">restify</a>
 * <a href="https://github.com/visionmedia/supertest">supertest</a>
 * <a href="http://underscorejs.org/">underscore</a>

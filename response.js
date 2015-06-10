@@ -9,6 +9,7 @@
 var _	    = require('underscore');
     Enum  = require('enum');
     hal	  = require('hal');
+    pjson = require('./package.json');
     util  = require('util');
 
 //
@@ -66,7 +67,7 @@ var ErrorResponse = (function () {
 
         }, this);
 
-        this.response.code        = 400;
+        this.response.code        = '400';
         this.response.message     = 'Validation error(s)';
         this.response.description = 'Please fix all errors before proceeding';
      
@@ -93,7 +94,27 @@ var ComputeResponse = (function () {
     ComputeResponse.prototype.constructor = ComputeResponse;
 
     function ComputeResponse(uri) {
-        /*TODO*/
+        this.response = new hal.Resource({
+          code: null,
+          message: null,
+          description: null,
+          _links: []
+        }, uri);
+        return this;
+    }
+
+    ComputeResponse.prototype.build = function (id_generated) {
+
+        this.response.code        = id_generated;
+        this.response.message     = 'Success';
+        this.response.description = 'You can access your result via the _links provided using the key provided';
+        this.response.link('result', '/'+pjson.name+'/result/'+id_generated);
+
+        return this;
+    }
+
+    ComputeResponse.prototype.finish = function () {
+        return this.response;
     }
 
     return ComputeResponse;

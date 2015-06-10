@@ -10,8 +10,12 @@
 var fs 		= require('fs');
 	restify = require('restify');
 	
-// Config
+// Server Config
 var port 	= process.env.PORT || 8080;
+
+// Cache Model params
+var stdTTL = 0; 		//Default
+var checkperiod = 600;	//Default
 
 // Serve
 var server = restify.createServer({'name': 'node-rest-tsp'});
@@ -19,18 +23,35 @@ var server = restify.createServer({'name': 'node-rest-tsp'});
 server.use(restify.fullResponse()); // Set up default headers
 server.use(restify.bodyParser()); 	// Remap the body content of a request
 
+
+// Bluntly add our model
+var modelFile = fs.readdirSync('model')[0];
+var model;
+
+if (modelFile.indexOf('.js') === -1) {                      
+	return;                                                           
+} else {                                                      
+	modelFile = modelFile.replace('.js', '');             
+	model = require('./model/' + modelFile); 
+}
+
 // Add the routing controllers
 
+var computeModel = new model(stdTTL, checkperiod);
 var controllerFiles = fs.readdirSync('controllers');
 
 controllerFiles.forEach(function (controllerFile) { 
-if (controllerFile.indexOf('.js') === -1) {                      
-	return;                                                           
-} else {                                                      
-	controllerFile = controllerFile.replace('.js', '');             
-	var controller = require('./controllers/' + controllerFile); 
-	controller.setup(server);                                                 }
+	if (controllerFile.indexOf('.js') === -1) {                      
+		return;                                                           
+	} else {                                                      
+		controllerFile = controllerFile.replace('.js', '');             
+		var controller = require('./controllers/' + controllerFile); 
+		// Model is accessed by all controllers, no biggie since we are going for simplicity
+		controller.setup(server, computeModel);                                          
+	}
 });
+
+
 
 // Start listening
 server.listen(port, function () {

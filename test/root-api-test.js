@@ -46,7 +46,7 @@ describe('root', function() {
 			name: pjson.name,
 			version: pjson.version,
 			repository: pjson.repository,
-			cacheable: false
+			cacheable: true
 		}, '/'+pjson.name);
 
 		expected_json.link('compute', '/'+pjson.name+'/compute');

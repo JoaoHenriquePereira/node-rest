@@ -23,7 +23,7 @@ module.exports.setup = function (server) {
 			name: pjson.name,
 			version: pjson.version,
 			repository: pjson.repository,
-			cacheable: false
+			cacheable: true
 		}, '/'+pjson.name);
 
 		api_root.link('compute', '/'+pjson.name+'/compute');

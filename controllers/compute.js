@@ -6,10 +6,10 @@
 // Compute Controller
 //
 
-var Enum					= require('enum');
+var chai 					= require('chai');
+	Enum					= require('enum');
 	hal 					= require('hal');
 	pjson 					= require('../package.json');
-	chai 					= require('chai');
 	ResponseBuilder			= require('../response');
 	acceptable_graph_types 	= new Enum(['u2d-cartesian']);				//For now all we'll have is this one
 
@@ -35,7 +35,8 @@ function filter_post_input(req_body) {
 		Response = new ResponseBuilder.ErrorResponse('/'+pjson.name+'/compute')
 												.build([{ 
     													message: 'Invalid graph_type, acceptable types: '+acceptable_graph_types.toString(),
-    													dataPath: '/graph_type'}])
+    													dataPath: '/graph_type'
+    											}])
 												.finish();
 		return false;
 	}
@@ -43,23 +44,35 @@ function filter_post_input(req_body) {
 	return true;
 }
 
-module.exports.setup = function (server) {
+module.exports.setup = function (server, model) {
 	
 	// Compute POST handler 
 	function compute_post(req, res, next) {
 
 		if(filter_post_input(req.body)){
 			// Process request and generate result
-
-			//...
-			/*Response = new ResponseBuilder.ComputeResponse('/'+pjson.name+'/compute')
+			var compute_result = model.compute(req.body);
+			// Prepare response
+			Response = new ResponseBuilder.ComputeResponse('/'+pjson.name+'/compute')
+												.build(compute_result)
 												.finish();
-*/
-
 
 			res.send(200, Response);
 		} else {
-			res.send(Response.code, Response);
+			res.send(400, Response);
+		}
+
+		return next();
+	}
+
+	// Result GET handler 
+	function result_get(req, res, next) {
+		
+		var result = model.get(req.params.id);
+		if(result != undefined){
+			res.send(200, result);
+		} else {
+			res.send(400, result);
 		}
 
 		return next();
@@ -68,4 +81,5 @@ module.exports.setup = function (server) {
 	// Wiring
 	var API_PATH = '/'+pjson.name;
 	server.post({path: API_PATH+'/compute', version: '0.0.1'}, compute_post);
+	server.get({path: API_PATH+'/result/:id', version: '0.0.1'}, result_get);
 }

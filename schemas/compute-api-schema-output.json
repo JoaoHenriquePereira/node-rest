@@ -4,7 +4,7 @@
     "required": ["code", "_links"],
     "properties": {
         "code": {
-            "type": "number"
+            "type": "string"
         },
         "message": {
             "type": "string"
@@ -13,9 +13,6 @@
             "type": "string"
         },
         "_links": {
-            "type": "object"
-        },
-        "_embedded": {
             "type": "object"
         },
         "_errors": {

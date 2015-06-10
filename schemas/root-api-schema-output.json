@@ -17,9 +17,6 @@
         },
         "_links": {
             "type": "object"
-        },
-        "_embedded": {
-            "type": "object"
         }
     }
 }

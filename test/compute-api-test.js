@@ -15,6 +15,8 @@ var chai 			= require('chai');
 
 chai.use(require('chai-json-schema'));
 
+
+
 describe('compute', function() {
 
   	it('Must filter input for bad requests', function(done) {
@@ -83,11 +85,14 @@ describe('compute', function() {
 		done();
   	});
 
-	it('Must allow access to result', function(done) {
-  		
-		var entry_point = '/'+pjson.name+'/compute';
+	
 
-  		var expected_json_schema = require('../schemas/compute-api-schema-output.json');
+	it('Must allow access to result', function(done) {
+
+		var expected_compute_json_schema = require('../schemas/compute-api-schema-output.json');
+  		var expected_result_json_schema = require('../schemas/result-api-schema-output.json');
+		var compute_entry_point = '/'+pjson.name+'/compute';
+		var result_entry_point = '/'+pjson.name+'/result';
 
 		var good_request_json = {
   			"graph_type": "u2d-cartesian",	//Unsigned 2d-cartesian coordinates
@@ -112,31 +117,26 @@ describe('compute', function() {
   			},
   		}
 
-  		var success_code = "";
-
 		// Test good request
-		api.post(entry_point)
+		api.post(compute_entry_point)
 		.set('Accept', 'application/json')
 		.set('Accept-Version', pjson.version)
 		.send(good_request_json)
 		.expect(200)
 		.end( function(err, res) {
 			if (err) return done(err);
-			success_code = res.body.code;
-			expect(res.body).to.be.jsonSchema(expected_json_schema);
+			expect(res.body).to.be.jsonSchema(expected_compute_json_schema);
+			//Get the result
+			api.get(result_entry_point+'/'+res.body.code)
+			.set('Accept', 'application/json')
+			.set('Accept-Version', pjson.version)
+			.expect(200)
+			.end( function(err, res) {
+				if (err) return done(err);
+				expect(res.body).to.be.jsonSchema(expected_result_json_schema);
+			});
 		});
 
-		// Test good request no version specified
-		api.post(entry_point)
-		.set('Accept', 'application/json')
-		.set('Accept-Version', pjson.version)
-		.send(good_request_json)
-		.expect(200)
-		.end( function(err, res) {
-			if (err) return done(err);
-			expect(success_code).to.not.equal(res.body.code);
-			expect(res.body).to.be.jsonSchema(expected_json_schema);
-		});
 		done();
   	});
 
