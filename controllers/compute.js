@@ -77,6 +77,7 @@ module.exports.setup = function (server, model) {
     													message: 'This id is invalid or it has expired',
     													dataPath: 'problem: ' + req.params.id
     											}])
+    											.addLink('compute', '/'+pjson.name+'/compute');
 												.finish();
 			res.send(400, Response);
 		}
