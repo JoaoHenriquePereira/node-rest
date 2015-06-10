@@ -67,12 +67,18 @@ module.exports.setup = function (server, model) {
 
 	// Result GET handler 
 	function result_get(req, res, next) {
-		
+
 		var result = model.get(req.params.id);
 		if(result != undefined){
 			res.send(200, result);
 		} else {
-			res.send(400, result);
+			Response = new ResponseBuilder.ErrorResponse('/'+pjson.name+'/result/'+req.params.id)
+												.build([{ 
+    													message: 'This id is invalid or it has expired',
+    													dataPath: 'problem: ' + req.params.id
+    											}])
+												.finish();
+			res.send(400, Response);
 		}
 
 		return next();
