@@ -50,6 +50,7 @@ module.exports.setup = function (server, model) {
 	function compute_post(req, res, next) {
 
 		if(filter_post_input(req.body)){
+
 			// Process request and generate result
 			var compute_result = model.compute(req.body);
 			// Prepare response
@@ -57,6 +58,7 @@ module.exports.setup = function (server, model) {
 												.build(compute_result)
 												.finish();
 
+			
 			res.send(200, Response);
 		} else {
 			res.send(400, Response);
@@ -77,7 +79,7 @@ module.exports.setup = function (server, model) {
     													message: 'This id is invalid or it has expired',
     													dataPath: 'problem: ' + req.params.id
     											}])
-    											.addLink('compute', '/'+pjson.name+'/compute');
+    											.addLink('compute', '/'+pjson.name+'/compute')
 												.finish();
 			res.send(400, Response);
 		}
