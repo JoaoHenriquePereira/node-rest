@@ -32,10 +32,9 @@ var insertDocuments = function(db, json_input_data, callback) {
  */
 
 var ComputeModel = (function () {
-  	function ComputeModel(stdTTL, checkperiod) {
+  	function ComputeModel(db_config, stdTTL, checkperiod) {
   		cache = new NodeCache( { stdTTL: stdTTL, checkperiod: checkperiod } );
-  		var config = require('../config.json');
-		uri = config.db_uri;
+  		uri = db_config.db_uri;
   	}
 
 	ComputeModel.prototype.set = function (key, val, ttl) {

@@ -36,8 +36,8 @@ if (modelFile.indexOf('.js') === -1) {
 }
 
 // Add the routing controllers
-
-var computeModel = new model(stdTTL, checkperiod);
+var db_config = require('./config.json');
+var computeModel = new model(db_config, stdTTL, checkperiod);
 var controllerFiles = fs.readdirSync('controllers');
 
 controllerFiles.forEach(function (controllerFile) { 
