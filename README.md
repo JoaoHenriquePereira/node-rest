@@ -3,7 +3,7 @@ node-rest
 
 Playing with nodejs, TDD and REST API's.
 
-`IMPORTANT: This project is not trying to accomplish any particular goal, the usage of this API is currently in development in another project at <a href="https://github.com/JoaoHenriquePereira/rust-tsp">rust-tsp</a>.`
+`IMPORTANT:` This project is not trying to accomplish any particular goal, the usage of this API is currently in development in another project at <a href="https://github.com/JoaoHenriquePereira/rust-tsp">rust-tsp</a>.
 
 # Libs
 
