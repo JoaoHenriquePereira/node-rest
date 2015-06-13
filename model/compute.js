@@ -25,8 +25,8 @@ var insertDocuments = function(db, json_input_data, callback) {
 }
 
 /**
- * Represents the ComputeModel for managing results and accessing rust-tsp,
- * In fact it's a cache manager and rust-tsp DAO
+ * Represents the ComputeModel for managing results and accessing the engine,
+ * In fact it's a cache manager and engine DAO
  * @param {number}  stdTTL     		the std time-to-life in seconds.
  * @param {number}  checkperiod     the .
  */
@@ -56,7 +56,7 @@ var ComputeModel = (function () {
 		json_input_data._id = _id;
 		json_input_data.insert_utimestamp = current_date;
 
-		// Store request in Mongo for rust-tsp usage
+		// Store request in Mongo
 		MongoClient.connect(uri, function(err, db) {
 			assert.equal(null, err);
 			insertDocuments(db, json_input_data, function() {
@@ -64,7 +64,7 @@ var ComputeModel = (function () {
   			});
 		});
 
-		//Send _id to rust-tsp
+		//Do something
 		
 
 		return _id;

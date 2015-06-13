@@ -1,7 +1,9 @@
-node-rest-tsp
+node-rest
 ==========
 
-Playing with nodejs, TDD and REST API's to expose <a href="https://github.com/JoaoHenriquePereira/rust-tsp">rust-tsp</a>
+Playing with nodejs, TDD and REST API's.
+
+`IMPORTANT: This project is not trying to accomplish any particular goal, the usage of this API is currently in development in another project at <a href="https://github.com/JoaoHenriquePereira/rust-tsp">rust-tsp</a>.`
 
 # Libs
 
@@ -31,8 +33,3 @@ I am focusing mainly on architecturing it properly from the start and using a te
 * <a href="https://github.com/jedwood/express-for-APIs/blob/master/server.js">express API</a>
 * <a href="http://www.infoq.com/articles/webber-rest-workflow">How to GET a Cup of Coffee</a>
 * <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Richardson maturity model explained</a>
-
-# TODO
-
-* Actually call rust-tsp, atm is just mocked
-* Add caching
